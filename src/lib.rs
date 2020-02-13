@@ -232,10 +232,11 @@ impl Decoder {
 impl Decoder {
     pub fn read(data: &[u8]) -> std::result::Result<Self, KtxError> {
         let (mut rest, header) = parse_header(data)?;
+        println!("Header: {:?}", header);
 
         let endianness = header.endianness;
         let mut data = Vec::new();
-
+        let is_cube = if header.faces == 6 && header.array_elements == 1 { true } else { false };
         for mip_level in 0..header.mips {
             let (r, image_size) = u32!(rest, endianness)?;
             rest = r;
@@ -254,6 +255,11 @@ impl Decoder {
                     }
                 }
             }*/
+            let image_size = if is_cube {
+                6 * image_size
+            } else {
+                image_size
+            };
             data.extend(
                 &rest[0..image_size as usize]
             );
