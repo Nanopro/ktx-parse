@@ -255,11 +255,11 @@ impl Decoder {
                     }
                 }
             }*/
-            let image_size = if is_cube {
+            /*let image_size = if is_cube {
                 6 * image_size
             } else {
                 image_size
-            };
+            };*/
             data.extend(
                 &rest[0..image_size as usize]
             );
